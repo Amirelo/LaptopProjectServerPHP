@@ -14,6 +14,10 @@ class UserController{
     public function SignUp($username, $userPassword, $email, $phonenumber,$fullname, $gender, $birthday){
         return $this -> UserService -> insertUser($username, $userPassword, $email, $phonenumber,$fullname, $gender, $birthday);
     }
+
+    public function SignIn($username, $userPassword){
+        return $this->UserService->SignIn($username, $userPassword);
+    }
 }
 
 

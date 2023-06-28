@@ -71,6 +71,28 @@ class UserService{
         }
         return $response;
     }
-}
 
-?>
+    public function SignIn($username, $userPassword){
+        $response = null;
+        $sql = "SELECT username, userPassword FROM ".$this->table_name." WHERE username = ?";
+        $stmt = $this -> connection -> prepare($sql);
+        $stmt -> bindParam(1, $username);
+        $stmt -> setFetchMode(PDO::FETCH_ASSOC);
+        $stmt ->execute();
+        
+        if($stmt->rowCount()>0){
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($userPassword == $row['userPassword']) {
+                $response = new Response(1, "Sign In successful", null);
+            } else{
+                $response = new Response(0, "Wrong username or password", null);
+            }
+            
+        } else{
+            $response = new Response(0, "Wrong username or password", null);
+        }
+    return $response;
+    }
+
+
+}
