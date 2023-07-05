@@ -1,22 +1,31 @@
 <?php 
-include_once '../services/UserService.php';
+include_once '../../services/UserService.php';
+
 class UserController{
-    private $UserService;
+    private $userService;
     public function __construct()
     {
-        $this->UserService = new UserService();
+        $this->userService = new UserService();
     }
 
     public function checkEmail($email, $type){
-        return $this -> UserService -> checkEmail($email, $type);
+        return $this -> userService -> checkEmail($email, $type);
     }
 
-    public function SignUp($username, $userPassword, $email, $phonenumber,$fullname, $gender, $birthday){
-        return $this -> UserService -> insertUser($username, $userPassword, $email, $phonenumber,$fullname, $gender, $birthday);
+    public function checkPhoneNumber($phoneNumber){
+        return $this -> userService -> checkPhoneNumber($phoneNumber);
     }
 
-    public function SignIn($username, $userPassword){
-        return $this->UserService->SignIn($username, $userPassword);
+    public function signUp($username, $userPassword, $email, $phonenumber,$fullname, $gender, $birthday){
+        return $this -> userService -> insertUser($username, $userPassword, $email, $phonenumber,$fullname, $gender, $birthday);
+    }
+
+    public function signIn($username, $userPassword){
+        return $this->userService->signIn($username, $userPassword);
+    }
+
+    public function updateUserInfo($data, $email, $type){
+        return $this->userService->updateUserInfo($data,$email,$type);
     }
 }
 

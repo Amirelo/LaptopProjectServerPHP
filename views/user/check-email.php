@@ -6,8 +6,8 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 
-include_once '../controllers/UserController.php';
-include_once '../models/Response.php';
+include_once '../../controllers/UserController.php';
+include_once '../../models/response.php';
 
 $input = json_decode(file_get_contents("php://input"));
 
