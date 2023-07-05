@@ -5,7 +5,7 @@ include_once '../../models/Response.php';
 class UserService
 {
     private $connection;
-    private $table_name = "USER";
+    private $table_name = "TBL_USER";
 
     public function __construct()
     {

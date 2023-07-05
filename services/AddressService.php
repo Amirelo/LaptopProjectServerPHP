@@ -4,7 +4,7 @@ include_once '../../models/address.php';
 
 class AddressService{
     private $connection;
-    private $table_name = "Address";
+    private $table_name = "TBL_ADDRESS";
 
     public function __construct()
     {
