@@ -5,7 +5,7 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-include_once '../../controllers/ProductImageController.php';
+include_once '../../controllers/RatingImageController.php';
 include_once '../../models/response.php';
 
 $input = json_decode(file_get_contents('php://input'));
@@ -13,16 +13,14 @@ $input = json_decode(file_get_contents('php://input'));
 $response = null;
 try {
     if (
-        isset($input->productImageID) 
-        && isset($input->productImageLink) 
-        && isset($input->status)
-        && isset($input->productID)
+        isset($input->imageLink) && isset($input->status)
+        && isset($input->ratingID)
     ) {
-        $response = (new ProductImageController())->updateProductImageByID(
-            $input->productImageID,
-            $input->productImageLink,
+        $response = (new RatingImageController())->insertRatingImageInfo(
+            $input->imageLink,
             $input->status,
-            $input->productID);
+            $input->ratingID
+        );
     } else {
         $response = new Response(3, "Not enough parameters", null);
     }

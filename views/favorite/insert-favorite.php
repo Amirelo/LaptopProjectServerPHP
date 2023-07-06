@@ -5,7 +5,7 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-include_once '../../controllers/ProductImageController.php';
+include_once '../../controllers/FavoriteController.php';
 include_once '../../models/response.php';
 
 $input = json_decode(file_get_contents('php://input'));
@@ -13,16 +13,9 @@ $input = json_decode(file_get_contents('php://input'));
 $response = null;
 try {
     if (
-        isset($input->productImageID) 
-        && isset($input->productImageLink) 
-        && isset($input->status)
-        && isset($input->productID)
+        isset($input->userID) && isset($input->productID)
     ) {
-        $response = (new ProductImageController())->updateProductImageByID(
-            $input->productImageID,
-            $input->productImageLink,
-            $input->status,
-            $input->productID);
+        $response = (new FavoriteController())->insertFavorite($input->userID,$input->productID);
     } else {
         $response = new Response(3, "Not enough parameters", null);
     }
