@@ -13,9 +13,9 @@ $input = json_decode(file_get_contents('php://input'));
 $response = null;
 try {
     if (
-        isset($input->userID)
+        isset($input->username)
     ) {
-        $response = (new CartController())->getCartsByUserID($input->userID);
+        $response = (new CartController())->getCartsByUsername($input->username);
     } else {
         $response = new Response(3, "Not enough parameters", null);
     }

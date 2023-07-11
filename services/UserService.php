@@ -1,6 +1,7 @@
 <?php
 include_once '../../dbconfigs/dbconfig.php';
 include_once '../../models/Response.php';
+include_once '../../models/user.php';
 
 class UserService
 {
@@ -12,6 +13,7 @@ class UserService
         $this->connection = (new Database())->getConnect();
     }
 
+
     public function checkEmail($email, $type)
     {
         $sql = "SELECT * FROM " . $this->table_name . " WHERE EMAIL = ?";
@@ -20,15 +22,17 @@ class UserService
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
-            if ($type == 1) {
+            if ($type == "SIGNUP") {
                 $response = new Response(0, "Email already registered!", null);
-            } else {
-                $response = new Response(1, "Redirect to verification screen", null);
+            }
+            if ($type == "CHANGEPASSWORD") {
+                $response = new Response(1, "Email found", null);
             }
         } else {
-            if ($type == 1) {
+            if ($type == "SIGNUP") {
                 $response = new Response(1, "You can use this email", null);
-            } else {
+            }
+            if ($type == "CHANGEPASSWORD") {
                 $response = new Response(0, "This email is not registered with us", null);
             }
         }
@@ -50,7 +54,8 @@ class UserService
         return $response;
     }
 
-    public function checkUserName($username){
+    public function checkUserName($username)
+    {
         $sql = "SELECT * FROM " . $this->table_name . " WHERE USERNAME = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1, $username);
@@ -67,7 +72,7 @@ class UserService
 
     public function insertUser($username, $userPassword, $email, $phonenumber, $fullname, $gender, $birthday)
     {
-        if ($this->checkEmail($email, 1)->response_code != 1) {
+        if ($this->checkEmail($email, "SIGNUP")->response_code != 1) {
             return new Response(0, "Email already registered", null);
         }
         if ($this->checkPhoneNumber($phonenumber)->response_code != 1) {
@@ -109,7 +114,7 @@ class UserService
     public function signIn($username, $userPassword)
     {
         $response = null;
-        $sql = "SELECT username, userPassword FROM " . $this->table_name . " WHERE username = ?";
+        $sql = "SELECT USERNAME, USERPASSWORD FROM " . $this->table_name . " WHERE username = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1, $username);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -117,13 +122,34 @@ class UserService
 
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($userPassword == $row['userPassword']) {
-                $response = new Response(1, "Sign In successful", null);
+            if ($userPassword == $row['USERPASSWORD']) {
+                $user = new Users(null, $row['USERNAME'], null, null, null, null, null, null, null, null, null, null);
+                $response = new Response(1, "Sign In successful", $user);
             } else {
                 $response = new Response(0, "Wrong username or password", null);
             }
         } else {
             $response = new Response(0, "Wrong username or password", null);
+        }
+        return $response;
+    }
+
+    public function getUserByUsername($username)
+    {
+        $response = null;
+        $sql = "SELECT USERID,USERNAME, USERPASSWORD,EMAIL,PHONENUMBER,FULLNAME,IMAGELINK,BIRTHDAY,GENDER FROM " . $this->table_name . " WHERE username = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(1, $username);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            extract($row);
+            $user = new Users($USERID,$USERNAME, null,$EMAIL,$PHONENUMBER,$FULLNAME,$IMAGELINK,null,$GENDER,null,null,$BIRTHDAY);
+            $response = new Response(1, "Get current user successful", $user);
+        } else {
+            $response = new Response(0, "Get current user fail", null);
         }
         return $response;
     }
@@ -163,6 +189,10 @@ class UserService
                 return $this->updateEmail($data, $email);
             case "STATUS":
                 return $this->updateAccountStatus($data, $email);
+            case "PHONENUMBER":
+                return $this->updatePhoneNumber($data, $email);
+            default:
+                return new Response(0, "Action not found", null);
         }
     }
 
@@ -172,6 +202,22 @@ class UserService
         $sql = "UPDATE " . $this->table_name . " SET username=? WHERE email=?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1, $username);
+        $stmt->bindParam(2, $email);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+
+        if ($stmt->execute()) {
+            $response = new Response(1, "Update success", null);
+        }
+        return $response;
+    }
+
+    public function updatePhoneNumber($phoneNumber, $email)
+    {
+        $response = null;
+        $sql = "UPDATE " . $this->table_name . " SET PHONENUMBER=? WHERE email=?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(1, $phoneNumber);
         $stmt->bindParam(2, $email);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
@@ -277,5 +323,4 @@ class UserService
         }
         return $response;
     }
-
 }

@@ -1,5 +1,6 @@
 <?php 
 class UserOrder{
+    public $userOrderID;
     public $totalPrice;
     public $originalPrice;
     public $note;
@@ -16,8 +17,9 @@ class UserOrder{
     public $couponID;
 
 
-function __construct($totalPrice,$originalPrice,$note,$status,$receiver,$shippingFee,$paymentType,$pendingDate,$prepareDate,$deliveryDate,$arrivedDate,$addressID,$userID,$couponID)
+function __construct($userOrderID,$totalPrice,$originalPrice,$note,$status,$receiver,$shippingFee,$paymentType,$pendingDate,$prepareDate,$deliveryDate,$arrivedDate,$addressID,$userID,$couponID)
     {
+        $this-> userOrderID = $userOrderID;
         $this-> totalPrice = $totalPrice;
         $this-> originalPrice = $originalPrice;
         $this-> note = $note;

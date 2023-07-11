@@ -1,17 +1,17 @@
 <?php 
 class Users{
-    private $userId;
-    private $username;
-    private $password;
-    private $email;
-    private $phonenumber;
-    private $fullname;
-    private $imageLink;
-    private $createdate;
-    private $gender;
-    private $accountStatus;
-    private $isAdmin;
-    private $birthday;
+    public $userId;
+    public $username;
+    public $password;
+    public $email;
+    public $phonenumber;
+    public $fullname;
+    public $imageLink;
+    public $createdate;
+    public $gender;
+    public $accountStatus;
+    public $isAdmin;
+    public $birthday;
 
     public function __construct($userId, $username, $password, $email, $phonenumber,$fullname, $imageLink, $createdate, $gender, $accountStatus, $isAdmin, $birthday){
         $this->userId = $userId;

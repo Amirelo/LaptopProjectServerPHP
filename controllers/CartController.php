@@ -12,8 +12,8 @@ class CartController{
         return $this->storageService->getAllCarts();
     }
 
-    public function getCartsByUserID($userID){
-        return $this->storageService->getCartsByUserID($userID);
+    public function getCartsByUsername($username){
+        return $this->storageService->getCartsByUsername($username);
     }
 
     public function insertCartInfo($itemQuantity,$userID,$productID){

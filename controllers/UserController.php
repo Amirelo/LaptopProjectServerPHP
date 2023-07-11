@@ -27,6 +27,10 @@ class UserController{
     public function updateUserInfo($data, $email, $type){
         return $this->userService->updateUserInfo($data,$email,$type);
     }
+
+    public function getUserByUsername($username){
+        return $this->userService->getUserByUsername($username);
+    }
 }
 
 

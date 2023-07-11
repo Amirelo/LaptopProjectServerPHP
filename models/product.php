@@ -13,6 +13,10 @@ class Product
     public $manufacturer;
     public $warranty;
     public $sold;
+    public $length;
+    public $width;
+    public $height;
+    public $weight;
     public $status;
     public $brandID;
     public $screenID;
@@ -20,7 +24,14 @@ class Product
     public $processorID;
     public $memoryID;
     public $storageID;
-    public function __construct($productID, $productName, $productPrice, $productQuantity, $releasedDate, $totalRating, $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, $sold, $status, $brandID, $screenID, $operatingSystemID, $processorID, $memoryID, $storageID)
+    public $productImageLink;
+
+    public function __construct($productID, $productName, 
+        $productPrice, $productQuantity, $releasedDate, $totalRating, 
+        $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, 
+        $sold, $length, $width, $height, $weight,
+        $status, $brandID, $screenID, $operatingSystemID, $processorID, 
+        $memoryID, $storageID,$productImageLink)
     {
         $this->productID = $productID;
         $this->productName = $productName;
@@ -34,6 +45,10 @@ class Product
         $this->manufacturer = $manufacturer;
         $this->warranty = $warranty;
         $this->sold = $sold;
+        $this -> length =$length;
+        $this -> width =$width;
+        $this -> height =$height;
+        $this -> weight =$weight;
         $this->status = $status;
         $this->brandID = $brandID;
         $this->screenID = $screenID;
@@ -41,5 +56,7 @@ class Product
         $this->processorID = $processorID;
         $this->memoryID = $memoryID;
         $this->storageID = $storageID;
+        $this->productImageLink = $productImageLink;
     }
+
 }

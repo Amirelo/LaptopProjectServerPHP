@@ -10,6 +10,10 @@ class AddressController{
         return (new AddressService())->getAddressesByUserID($userID);
     }
 
+    public function getAddressesByUsername($username){
+        return (new AddressService())->getAddressesByUsername($username);
+    }
+
     public function insertAddress($addressName,$ward,$district,$city,$status,$userID){
         return (new AddressService()) -> insertAddress($addressName,$ward,$district,$city,$status,$userID);
     }

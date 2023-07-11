@@ -10,31 +10,36 @@ class CartService{
     {
         $this->connection = (new Database())->getConnect();
     }
-
+    
     public function getAllCarts(){
-        $sql = "SELECT CARTID,ITEMQUANTITY,USERID,PRODUCTID FROM ".$this->table_name;
+        $sql = "SELECT CARTID,ITEMQUANTITY,C.USERID,C.PRODUCTID, P.PRODUCTNAME,P.CURRENTPRICE FROM ".$this->table_name." C LEFT JOIN TBL_PRODUCT P ON C.PRODUCTID=P.PRODUCTID";
         $stmt = $this->connection->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         $listCarts = [];
         while($row = $stmt->fetch()){
             extract($row);
-            $cart = new Cart($CARTID,$ITEMQUANTITY,$USERID,$PRODUCTID);
+            $cart = new Cart($CARTID,$ITEMQUANTITY,$USERID,$PRODUCTID,$PRODUCTNAME,$CURRENTPRICE,null);
             array_push($listCarts, $cart);
         }
         return new Response(1,"Get all cart success", $listCarts);
     }
 
-    public function getCartsByUserID($userID){
-        $sql = "SELECT CARTID,ITEMQUANTITY,USERID,PRODUCTID FROM ".$this->table_name." WHERE USERID=?";
+    public function getCartsByUsername($username){
+        $sql = "SELECT CARTID,ITEMQUANTITY,C.USERID,C.PRODUCTID, P.PRODUCTNAME,P.CURRENTPRICE,U.USERNAME, PI.PRODUCTIMAGELINK FROM ".$this->table_name.
+        " C LEFT JOIN TBL_USER U ON C.USERID = U.USERID "
+        ."LEFT JOIN TBL_PRODUCT P ON C.PRODUCTID=P.PRODUCTID "
+        ."LEFT JOIN TBL_PRODUCTIMAGE PI ON PI.PRODUCTID = P.PRODUCTID WHERE USERNAME=? AND PI.STATUS=1";
+        
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindParam(1,$userID);
+        $stmt->bindParam(1,$username);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
+        
         $listCarts = [];
         while($row = $stmt->fetch()){
             extract($row);
-            $cart = new Cart($CARTID,$ITEMQUANTITY,$USERID,$PRODUCTID);
+            $cart = new Cart($CARTID,$ITEMQUANTITY,$USERID,$PRODUCTID,$PRODUCTNAME,$CURRENTPRICE,$PRODUCTIMAGELINK);
             array_push($listCarts, $cart);
         }
         return new Response(1,"Get cart by id success", $listCarts);

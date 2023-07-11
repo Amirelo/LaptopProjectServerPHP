@@ -41,6 +41,36 @@ class AddressService{
         return new Response(1,"Get success", $listAddresses);
     }
 
+    public function getAddressesByUsername($username){
+        $sql = "SELECT addressID, addressName, ward, district, city,status, TBL_ADDRESS.userID FROM ".$this->table_name." LEFT JOIN TBL_USER ON TBL_ADDRESS.USERID=TBL_USER.USERID WHERE username=?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(1,$username);
+        $stmt-> setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $listAddresses = [];
+        while($row = $stmt->fetch()){
+            extract($row);
+            $address = new Address($addressID, $addressName, $ward, $district, $city,$status,$userID);
+            array_push($listAddresses,$address);
+        }
+        return new Response(1,"Get success", $listAddresses);
+    }
+
+    /* public function getAddressesByUserOrderID($userOrderID){
+        $sql = "SELECT addressID, addressName, ward, district, city,status, TBL_ADDRESS.userID FROM ".$this->table_name." LEFT JOIN TBL_USER ON TBL_ADDRESS.USERID=TBL_USER.USERID WHERE USERORDERID=?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(1,$username);
+        $stmt-> setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $listAddresses = [];
+        while($row = $stmt->fetch()){
+            extract($row);
+            $address = new Address($addressID, $addressName, $ward, $district, $city,$status,$userID);
+            array_push($listAddresses,$address);
+        }
+        return new Response(1,"Get success", $listAddresses);
+    } */
+
     public function insertAddress($addressName,$ward,$district,$city,$status,$userID){
         $sql = "INSERT INTO ".$this->table_name." (addressName,ward,district,city,status,userID) VALUES(?,?,?,?,?,?)";
         $stmt = $this->connection->prepare($sql);
@@ -59,27 +89,28 @@ class AddressService{
         return $response;
     }
 
-    public function updateAddressInfo($data, $type, $addressID){
+    public function updateAddressInfo($data, $type, $addressID, $userID){
         switch($type){
             case "ADDRESSNAME":
-                return $this->updateAddressName($data,$addressID);
+                return $this->updateAddressName($data,$addressID, $userID);
             case "DISTRICT":
-                return $this->updateDistrict($data,$addressID);
+                return $this->updateDistrict($data,$addressID, $userID);
             case "WARD":
-                return $this->updateWard($data,$addressID);
+                return $this->updateWard($data,$addressID, $userID);
             case "CITY":
-                return $this->updateCity($data,$addressID);
+                return $this->updateCity($data,$addressID, $userID);
             case "STATUS":
-                return $this->updateAddressStatus($data,$addressID);
+                return $this->updateAddressStatus($data,$addressID, $userID);
 
         }
     }
 
-    public function updateAddressName($addressName, $addressID){
-        $sql = "UPDATE ".$this->table_name." SET addressName=? WHERE addressID=?";
+    public function updateAddressName($addressName, $addressID, $userID){
+        $sql = "UPDATE ".$this->table_name." SET addressName=? WHERE addressID=? AND USERID=?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(1,$addressName);
         $stmt->bindValue(2,$addressID);
+        $stmt->bindValue(3,$userID);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         if($stmt->execute()){
             $response = new Response(1, "Update address district success", null);
@@ -89,11 +120,12 @@ class AddressService{
         return $response;
     }
 
-    public function updateWard($ward, $addressID){
-        $sql = "UPDATE ".$this->table_name." SET ward=? WHERE addressID=?";
+    public function updateWard($ward, $addressID, $userID){
+        $sql = "UPDATE ".$this->table_name." SET ward=? WHERE addressID=? AND USERID=?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(1,$ward);
         $stmt->bindValue(2,$addressID);
+        $stmt->bindValue(3,$userID);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         if($stmt->execute()){
             $response = new Response(1, "Update address ward success", null);
@@ -103,11 +135,12 @@ class AddressService{
         return $response;
     }
 
-    public function updateDistrict($district, $addressID){
-        $sql = "UPDATE ".$this->table_name." SET district=? WHERE addressID=?";
+    public function updateDistrict($district, $addressID, $userID){
+        $sql = "UPDATE ".$this->table_name." SET district=? WHERE addressID=? AND USERID=?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(1,$district);
         $stmt->bindValue(2,$addressID);
+        $stmt->bindValue(3,$userID);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         if($stmt->execute()){
             $response = new Response(1, "Update address district success", null);
@@ -117,11 +150,12 @@ class AddressService{
         return $response;
     }
 
-    public function updateCity($city, $addressID){
-        $sql = "UPDATE ".$this->table_name." SET city=? WHERE addressID=?";
+    public function updateCity($city, $addressID, $userID){
+        $sql = "UPDATE ".$this->table_name." SET city=? WHERE addressID=? AND USERID=?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(1,$city);
         $stmt->bindValue(2,$addressID);
+        $stmt->bindValue(3,$userID);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         if($stmt->execute()){
             $response = new Response(1, "Update address city success", null);
@@ -133,11 +167,12 @@ class AddressService{
 
     
 
-    public function updateAddressStatus($status, $addressID){
-        $sql = "UPDATE ".$this->table_name." SET status=? WHERE addressID=?";
+    public function updateAddressStatus($status, $addressID, $userID){
+        $sql = "UPDATE ".$this->table_name." SET status=? WHERE addressID=? AND USERID=?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(1,$status);
         $stmt->bindValue(2,$addressID);
+        $stmt->bindValue(3,$userID);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         if($stmt->execute()){
             $response = new Response(1, "Update address status success", null);
