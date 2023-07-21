@@ -14,8 +14,8 @@ $response = null;
 try {
     if (
     isset($input->totalPrice) && isset($input->originalPrice) && isset($input->note) 
-    && isset($input->receiver) && isset($input->shippingFee) && isset($input->paymentType) 
-    && isset($input->addressID) && isset($input->userID) && isset($input->couponID)
+    && isset($input->receiver) && isset($input->shippingFee) && isset($input->addressID) 
+    && isset($input->userID) && isset($input->couponID) && isset($input -> cardID)
     ) {
         $response = (new UserOrderController())->insertUserOrderInfo(
             $input->totalPrice,
@@ -23,10 +23,11 @@ try {
             $input->note,
             $input->receiver,
             $input->shippingFee,
-            $input->paymentType,
             $input->addressID,
             $input->userID,
-            $input->couponID);
+            $input->couponID,
+            $input->cardID
+        );
     } else {
         $response = new Response(3, "Not enough parameters", null);
     }

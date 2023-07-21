@@ -56,6 +56,21 @@ class AddressService{
         return new Response(1,"Get success", $listAddresses);
     }
 
+    public function getAddressesByEmail($email){
+        $sql = "SELECT addressID, addressName, ward, district, city,status, TBL_ADDRESS.userID FROM ".$this->table_name." LEFT JOIN TBL_USER ON TBL_ADDRESS.USERID=TBL_USER.USERID WHERE EMAIL=?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(1,$email);
+        $stmt-> setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $listAddresses = [];
+        while($row = $stmt->fetch()){
+            extract($row);
+            $address = new Address($addressID, $addressName, $ward, $district, $city,$status,$userID);
+            array_push($listAddresses,$address);
+        }
+        return new Response(1,"Get success", $listAddresses);
+    }
+
     /* public function getAddressesByUserOrderID($userOrderID){
         $sql = "SELECT addressID, addressName, ward, district, city,status, TBL_ADDRESS.userID FROM ".$this->table_name." LEFT JOIN TBL_USER ON TBL_ADDRESS.USERID=TBL_USER.USERID WHERE USERORDERID=?";
         $stmt = $this->connection->prepare($sql);

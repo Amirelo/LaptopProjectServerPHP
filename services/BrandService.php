@@ -41,6 +41,8 @@ class BrandService{
         return new Response(1,"Get brand by id success", $listBrands);
     }
 
+   
+
     public function insertBrand($brandName){
         $sql = "INSERT INTO ".$this->table_name." (BRANDNAME, STATUS) VALUES(?)";
         $stmt = $this->connection->prepare($sql);

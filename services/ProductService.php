@@ -12,7 +12,7 @@ class ProductService{
     }
 
     public function getAllProducts(){
-        $sql = "SELECT P.PRODUCTID,P.PRODUCTNAME,P.PRODUCTPRICE,P.PRODUCTQUANTITY,P.RELEASEDDATE,P.TOTALRATING,P.MODELCODE,P.ONSALE,P.CURRENTPRICE,P.MANUFACTURER,P.WARRANTY,P.SOLD,P.LENGTH,P.WIDTH,P.HEIGHT,P.WEIGHT,P.STATUS,P.BRANDID,P.SCREENID,P.OPERATINGSYSTEMID,P.PROCESSORID,P.MEMORYID,P.STORAGEID, I.PRODUCTIMAGELINK FROM ".$this->table_name." P LEFT JOIN TBL_PRODUCTIMAGE I ON P.PRODUCTID = I.PRODUCTID WHERE I.STATUS = 1";
+        $sql = "SELECT P.PRODUCTID,P.PRODUCTNAME,P.PRODUCTPRICE,P.PRODUCTQUANTITY,P.RELEASEDDATE,P.TOTALRATING,P.MODELCODE,P.ONSALE,P.CURRENTPRICE,P.MANUFACTURER,P.WARRANTY,P.SOLD,P.LENGTH,P.WIDTH,P.HEIGHT,P.WEIGHT,P.STATUS,P.BRANDID,P.SCREENID,P.OPERATINGSYSTEMID,P.PROCESSORID,P.MEMORYID,P.STORAGEID, I.PRODUCTIMAGELINK FROM ".$this->table_name." P LEFT JOIN TBL_PRODUCTIMAGE I ON P.PRODUCTID = (SELECT I.PRODUCTID WHERE I.STATUS=1)";
         $stmt = $this->connection->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
@@ -44,8 +44,8 @@ class ProductService{
    
 
 
-    public function insertProductInfo($productName, $productPrice, $productQuantity, $releasedDate, $totalRating, $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, $sold, $status, $brandID, $screenID, $operatingSystemID, $processorID, $memoryID, $storageID){
-        $sql = "INSERT INTO ".$this->table_name." (PRODUCTNAME,PRODUCTPRICE,PRODUCTQUANTITY,RELEASEDDATE,TOTALRATING,MODELCODE,ONSALE,CURRENTPRICE,MANUFACTURER,WARRANTY,SOLD,LENGTH,WIDTH,HEIGHT,WEIGHT,STATUS,BRANDID,SCREENID,OPERATINGSYSTEMID,PROCESSORID,MEMORYID,STORAGEID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public function insertProductInfo($productName, $productPrice, $productQuantity, $releasedDate, $totalRating, $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, $sold, $length, $width, $height, $weight, $status, $brandID, $screenID, $operatingSystemID, $processorID, $memoryID, $storageID){
+        $sql = "INSERT INTO ".$this->table_name." (PRODUCTNAME,PRODUCTPRICE,PRODUCTQUANTITY,RELEASEDDATE,TOTALRATING,MODELCODE,ONSALE,CURRENTPRICE,MANUFACTURER,WARRANTY,SOLD,LENGTH,WIDTH,HEIGHT,WEIGHT,STATUS,BRANDID,SCREENID,OPERATINGSYSTEMID,PROCESSORID,MEMORYID,STORAGEID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,b?,?,?,?,?,?,?)";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1,$productName); 
         $stmt->bindParam(2,$productPrice);
@@ -58,7 +58,7 @@ class ProductService{
         $stmt->bindParam(9,$manufacturer); 
         $stmt->bindParam(10,$warranty);
         $stmt->bindParam(11,$sold);
-        $stmt->bindParam(12,$lendth);
+        $stmt->bindParam(12,$length);
         $stmt->bindParam(13,$width);
         $stmt->bindParam(14,$height);
         $stmt->bindParam(15,$weight); 
@@ -78,7 +78,7 @@ class ProductService{
         }
         return $response;
     }
-    public function updateProductByID($productID, $productName, $productPrice, $productQuantity, $releasedDate, $totalRating, $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, $sold, $status, $brandID, $screenID, $operatingSystemID, $processorID, $memoryID, $storageID){
+    public function updateProductByID($productID, $productName, $productPrice, $productQuantity, $releasedDate, $totalRating, $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, $sold, $length, $width, $height, $weight, $status, $brandID, $screenID, $operatingSystemID, $processorID, $memoryID, $storageID){
         $sql = "UPDATE ".$this->table_name." SET PRODUCTNAME=?,PRODUCTPRICE=?,PRODUCTQUANTITY=?,RELEASEDDATE=?,TOTALRATING=?,MODELCODE=?,ONSALE=?,CURRENTPRICE=?,MANUFACTURER=?,WARRANTY=?,SOLD=?,LENGTH=?,WIDTH=?,HEIGHT=?,WEIGHT=?,STATUS=b?,BRANDID=?,SCREENID=?,OPERATINGSYSTEMID=?,PROCESSORID=?,MEMORYID=?,STORAGEID=? WHERE PRODUCTID=?";
         $stmt= $this->connection->prepare($sql);
         $stmt->bindParam(1,$productName); 
@@ -92,7 +92,7 @@ class ProductService{
         $stmt->bindParam(9,$manufacturer); 
         $stmt->bindParam(10,$warranty);
         $stmt->bindParam(11,$sold); 
-        $stmt->bindParam(12,$lendth);
+        $stmt->bindParam(12,$length);
         $stmt->bindParam(13,$width);
         $stmt->bindParam(14,$height);
         $stmt->bindParam(15,$weight); 
@@ -113,7 +113,24 @@ class ProductService{
         }
         return $response;
     }
+
+    public function updateProductStatus($productID,$status){
+        $sql = "UPDATE ".$this->table_name." SET STATUS=b? WHERE PRODUCTID=?";
+        $stmt= $this->connection->prepare($sql);
+        $stmt->bindParam(1,$status); 
+        $stmt->bindParam(2,$productID);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        if($stmt->rowCount()>0){
+            $response = new Response(1, "Update product status success", null);
+        } else{
+            $response = new Response(0, "No row matched id", null);
+        }
+        return $response;
+    }
 }
+
+
 
 
 

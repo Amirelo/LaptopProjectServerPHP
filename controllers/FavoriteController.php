@@ -21,6 +21,10 @@ class FavoriteController{
         return $this->favoriteService->insertFavorite($userID, $productID);
     }
 
+    public function checkFavorite($userID,$productID) {
+        return $this->favoriteService->checkFavorite($userID,$productID);
+    }
+
 }
 
 ?>

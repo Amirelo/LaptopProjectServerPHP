@@ -24,6 +24,10 @@ try {
         isset($input->manufacturer) &&
         isset($input->warranty) &&
         isset($input->sold) &&
+        isset($input->length) &&
+        isset($input->width) &&
+        isset($input->height) &&
+        isset($input->weight) &&
         isset($input->status) &&
         isset($input->brandID) &&
         isset($input->screenID) &&
@@ -44,6 +48,10 @@ try {
             $input->manufacturer,
             $input->warranty,
             $input->sold,
+            $input->length,
+            $input->width,
+            $input->height,
+            $input->weight,
             $input->status,
             $input->brandID,
             $input->screenID,

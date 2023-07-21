@@ -25,13 +25,18 @@ try {
         isset($input->manufacturer) &&
         isset($input->warranty) &&
         isset($input->sold) &&
+        isset($input->width) &&
+        isset($input->height) &&
+        isset($input->weight) &&
         isset($input->status) &&
         isset($input->brandID) &&
         isset($input->screenID) &&
         isset($input->operatingSystemID) &&
         isset($input->processorID) &&
         isset($input->memoryID) &&
-        isset($input->storageID)
+        isset($input->storageID) &&
+        isset($input->length)
+        
     ) {
         $response = (new ProductController())->updateProductByID(
             $input->productID,
@@ -46,13 +51,19 @@ try {
             $input->manufacturer,
             $input->warranty,
             $input->sold,
+            $input->length,
+            $input->width,
+            $input->height,
+            $input->weight,
             $input->status,
             $input->brandID,
             $input->screenID,
             $input->operatingSystemID,
             $input->processorID,
             $input->memoryID,
-            $input->storageID);
+            $input->storageID
+            
+        );
     } else {
         $response = new Response(3, "Not enough parameters", null);
     }

@@ -7,7 +7,6 @@ class UserOrder{
     public $status;
     public $receiver;
     public $shippingFee;
-    public $paymentType;
     public $pendingDate;
     public $prepareDate;
     public $deliveryDate;
@@ -15,9 +14,9 @@ class UserOrder{
     public $addressID;
     public $userID;
     public $couponID;
+    public $cardID;
 
-
-function __construct($userOrderID,$totalPrice,$originalPrice,$note,$status,$receiver,$shippingFee,$paymentType,$pendingDate,$prepareDate,$deliveryDate,$arrivedDate,$addressID,$userID,$couponID)
+function __construct($userOrderID,$totalPrice,$originalPrice,$note,$status,$receiver,$shippingFee,$pendingDate,$prepareDate,$deliveryDate,$arrivedDate,$addressID,$userID,$couponID,$cardID)
     {
         $this-> userOrderID = $userOrderID;
         $this-> totalPrice = $totalPrice;
@@ -26,7 +25,6 @@ function __construct($userOrderID,$totalPrice,$originalPrice,$note,$status,$rece
         $this-> status = $status;
         $this-> receiver = $receiver;
         $this-> shippingFee = $shippingFee;
-        $this-> paymentType = $paymentType;
         $this-> pendingDate = $pendingDate;
         $this-> prepareDate = $prepareDate;
         $this-> deliveryDate = $deliveryDate;
@@ -34,6 +32,7 @@ function __construct($userOrderID,$totalPrice,$originalPrice,$note,$status,$rece
         $this-> addressID = $addressID;
         $this-> userID = $userID;
         $this-> couponID = $couponID;
+        $this-> cardID = $cardID;
     }
 }
 

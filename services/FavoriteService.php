@@ -28,13 +28,13 @@ class FavoriteService
         return new Response(1, "Get user favorite success", $listFavorites);
     }
 
-    public function updateFavoriteStatus($favoriteID, $userID, $isFavorite)
+    public function updateFavoriteStatus($userID, $productID,$isFavorite)
     {
-        $sql = "UPDATE ".$this->table_name." SET ISFAVORITE=b? WHERE FAVORITEID=? AND USERID=?";
+        $sql = "UPDATE ".$this->table_name." SET ISFAVORITE=b? WHERE USERID=? AND PRODUCTID=?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1, $isFavorite);
-        $stmt->bindParam(2, $favoriteID);
-        $stmt->bindParam(3, $userID);
+        $stmt->bindParam(2, $userID);
+        $stmt->bindParam(3, $productID);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
@@ -46,7 +46,6 @@ class FavoriteService
     }
 
     public function insertFavorite($userID, $productID){
-        if ($this->checkFavorite($userID, $productID)->response_code == 0) {
             $sql = "INSERT INTO " . $this->table_name . " (ISFAVORITE,USERID,PRODUCTID) VALUES(true,?,?)";
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(1, $userID);
@@ -58,9 +57,6 @@ class FavoriteService
             } else {
                 $response = new Response(0, "Fail to insert favorite status rating, possibly dupplication", null);
             }
-        } else{
-            $response = new Response(0, "Already in database", null);
-        }
         return $response;
     }
 
@@ -72,11 +68,13 @@ class FavoriteService
         $stmt->bindParam(2, $productID);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
-        $listFavorites = [];
         if ($stmt->rowCount() > 0) {
-            return new Response(1, "Favorite found", $listFavorites);
+            $row = $stmt->fetch();
+            extract($row);
+            $ISFAVORITE = !$ISFAVORITE;
+            return $this-> updateFavoriteStatus($userID,$productID,$ISFAVORITE);
         } else {
-            $response = new Response(0, "No favorite found", null);
+            return $this-> insertFavorite($userID,$productID);
         }
     }
 }

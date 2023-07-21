@@ -11,37 +11,36 @@ class UserOrderService{
         $this->connection = (new Database())->getConnect();
     }
     public function getAllUserOrders(){
-        $sql = "SELECT USERORDERID,TOTALPRICE,ORIGINALPRICE,NOTE,STATUS,RECEIVER,SHIPPINGFEE,PAYMENTTYPE,PENDINGDATE,PREPAREDATE,DELIVERYDATE,ARRIVEDDATE,ADDRESSID,USERID,COUPONID FROM ".$this->table_name;
+        $sql = "SELECT USERORDERID,TOTALPRICE,ORIGINALPRICE,NOTE,STATUS,RECEIVER,SHIPPINGFEE,PENDINGDATE,PREPAREDATE,DELIVERYDATE,ARRIVEDDATE,ADDRESSID,USERID,COUPONID,CARDID FROM ".$this->table_name;
         $stmt = $this->connection->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         $listUserOrders = [];
         while($row = $stmt->fetch()){
             extract($row);
-            $userOrder = new UserOrder($USERORDERID,$TOTALPRICE,$ORIGINALPRICE,$NOTE,$STATUS,$RECEIVER,$SHIPPINGFEE,$PAYMENTTYPE,$PENDINGDATE,$PREPAREDATE,$DELIVERYDATE,$ARRIVEDDATE,$ADDRESSID,$USERID,$COUPONID);
+            $userOrder = new UserOrder($USERORDERID,$TOTALPRICE,$ORIGINALPRICE,$NOTE,$STATUS,$RECEIVER,$SHIPPINGFEE,$PENDINGDATE,$PREPAREDATE,$DELIVERYDATE,$ARRIVEDDATE,$ADDRESSID,$USERID,$COUPONID,$CARDID);
             array_push($listUserOrders, $userOrder);
         }
         return new Response(1,"Get all userOrder success", $listUserOrders);
     }
 
     public function getUserOrderByUserID($userID){
-        $sql = "SELECT USERORDERID,TOTALPRICE,ORIGINALPRICE,NOTE,STATUS,RECEIVER,SHIPPINGFEE,PAYMENTTYPE,PENDINGDATE,PREPAREDATE,DELIVERYDATE,ARRIVEDDATE,ADDRESSID,USERID,COUPONID FROM ".$this->table_name." WHERE USERID=?";
+        $sql = "SELECT USERORDERID,TOTALPRICE,ORIGINALPRICE,NOTE,STATUS,RECEIVER,SHIPPINGFEE,PENDINGDATE,PREPAREDATE,DELIVERYDATE,ARRIVEDDATE,ADDRESSID,USERID,COUPONID,CARDID FROM ".$this->table_name." WHERE USERID=? ORDER BY USERORDERID DESC";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1,$userID);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         $listUserOrders = [];
-        if($stmt->rowCount()>0){
-            $row = $stmt->fetch();
+        while($row = $stmt->fetch()){
             extract($row);
-            $userOrder = new UserOrder($USERORDERID,$TOTALPRICE,$ORIGINALPRICE,$NOTE,$STATUS,$RECEIVER,$SHIPPINGFEE,$PAYMENTTYPE,$PENDINGDATE,$PREPAREDATE,$DELIVERYDATE,$ARRIVEDDATE,$ADDRESSID,$USERID,$COUPONID);
+            $userOrder = new UserOrder($USERORDERID,$TOTALPRICE,$ORIGINALPRICE,$NOTE,$STATUS,$RECEIVER,$SHIPPINGFEE,$PENDINGDATE,$PREPAREDATE,$DELIVERYDATE,$ARRIVEDDATE,$ADDRESSID,$USERID,$COUPONID,$CARDID);
             array_push($listUserOrders, $userOrder);
         }
         return new Response(1,"Get userOrder by userID success", $listUserOrders);
     }
 
-    public function insertUserOrderInfo($totalPrice,$originalPrice,$note,$receiver,$shippingFee,$paymentType,$addressID,$userID,$couponID){
-        $sql = "INSERT INTO ".$this->table_name." (TOTALPRICE,ORIGINALPRICE,NOTE,STATUS,RECEIVER,SHIPPINGFEE,PAYMENTTYPE,PENDINGDATE,ADDRESSID,USERID,COUPONID) VALUES(?,?,?,0,?,?,?,?,?,?,?)";
+    public function insertUserOrderInfo($totalPrice,$originalPrice,$note,$receiver,$shippingFee,$addressID,$userID,$cardID){
+        $sql = "INSERT INTO ".$this->table_name." (TOTALPRICE,ORIGINALPRICE,NOTE,STATUS,RECEIVER,SHIPPINGFEE,PENDINGDATE,ADDRESSID,USERID,COUPONID,CARDID) VALUES(?,?,?,1,?,?,?,?,?,null,?)";
         $stmt = $this->connection->prepare($sql);
         $pendingDate = date('Y-m-d');
         $stmt->bindParam(1,$totalPrice); 
@@ -49,15 +48,23 @@ class UserOrderService{
         $stmt->bindParam(3,$note); 
         $stmt->bindParam(4,$receiver);
         $stmt->bindParam(5,$shippingFee);
-        $stmt->bindParam(6,$paymentType);
-        $stmt->bindParam(7,$pendingDate);
-        $stmt->bindParam(8,$addressID);
-        $stmt->bindParam(9,$userID);
-        $stmt->bindParam(10,$couponID);
+        $stmt->bindParam(6,$pendingDate);
+        $stmt->bindParam(7,$addressID);
+        $stmt->bindParam(8,$userID);
+        $stmt->bindParam(9,$cardID);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         if($stmt->rowCount()>0){
-            $response = new Response(1, "Insert userOrder success", null);
+            $sql2 = "SELECT USERORDERID,TOTALPRICE,ORIGINALPRICE,NOTE,STATUS,RECEIVER,SHIPPINGFEE,PENDINGDATE,ADDRESSID,USERID,COUPONID,CARDID FROM ".$this->table_name." WHERE USERID=? ORDER BY USERORDERID DESC";
+            $stmt2 = $this->connection->prepare($sql2);
+            $stmt2->bindParam(1,$userID);
+            $stmt2->setFetchMode(PDO::FETCH_ASSOC);
+            $stmt2->execute();
+
+            $row =$stmt2->fetch();
+            extract($row);
+            $userOrder = new UserOrder($USERORDERID,$TOTALPRICE,$ORIGINALPRICE,$NOTE,$STATUS,$RECEIVER,$SHIPPINGFEE,$PENDINGDATE,null,null,null,$ADDRESSID,$USERID,$COUPONID,$CARDID);
+            $response = new Response(1, "Insert userOrder success",$userOrder);
         } else{
             $response = new Response(0, "Fail to add userOrder, possibly dupplication", null);
         }

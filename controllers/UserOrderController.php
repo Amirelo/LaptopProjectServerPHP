@@ -16,8 +16,8 @@ class UserOrderController{
         return $this->storageService->getUserOrderByUserID($userID);
     }
 
-    public function insertUserOrderInfo($totalPrice,$originalPrice,$note,$receiver,$shippingFee,$paymentType,$addressID,$userID,$couponID){
-        return $this->storageService->insertUserOrderInfo($totalPrice,$originalPrice,$note,$receiver,$shippingFee,$paymentType,$addressID,$userID,$couponID);
+    public function insertUserOrderInfo($totalPrice,$originalPrice,$note,$receiver,$shippingFee,$addressID,$userID,$couponID,$cardID){
+        return $this->storageService->insertUserOrderInfo($totalPrice,$originalPrice,$note,$receiver,$shippingFee,$addressID,$userID,$couponID,$cardID);
     }
 
     public function updateUserOrderStatus($userOrderID,$userID, $status,$type){

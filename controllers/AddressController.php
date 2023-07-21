@@ -13,6 +13,9 @@ class AddressController{
     public function getAddressesByUsername($username){
         return (new AddressService())->getAddressesByUsername($username);
     }
+    public function getAddressesByEmail($email){
+        return (new AddressService())->getAddressesByEmail($email);
+    }
 
     public function insertAddress($addressName,$ward,$district,$city,$status,$userID){
         return (new AddressService()) -> insertAddress($addressName,$ward,$district,$city,$status,$userID);

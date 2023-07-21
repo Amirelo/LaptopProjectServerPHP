@@ -114,7 +114,7 @@ class UserService
     public function signIn($username, $userPassword)
     {
         $response = null;
-        $sql = "SELECT USERNAME, USERPASSWORD FROM " . $this->table_name . " WHERE username = ?";
+        $sql = "SELECT USERNAME, USERPASSWORD,EMAIL FROM " . $this->table_name . " WHERE username = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1, $username);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -123,7 +123,7 @@ class UserService
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($userPassword == $row['USERPASSWORD']) {
-                $user = new Users(null, $row['USERNAME'], null, null, null, null, null, null, null, null, null, null);
+                $user = new Users(null, $row['USERNAME'], null, $row['EMAIL'], null, null, null, null, null, null, null, null);
                 $response = new Response(1, "Sign In successful", $user);
             } else {
                 $response = new Response(0, "Wrong username or password", null);
@@ -151,6 +151,42 @@ class UserService
         } else {
             $response = new Response(0, "Get current user fail", null);
         }
+        return $response;
+    }
+
+    public function getUserByEmail($email){
+        $response = null;
+        $sql = "SELECT USERID,USERNAME, USERPASSWORD,EMAIL,PHONENUMBER,FULLNAME,IMAGELINK,BIRTHDAY,GENDER FROM " . $this->table_name . " WHERE EMAIL = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(1, $email);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            extract($row);
+            $user = new Users($USERID,$USERNAME, null,$EMAIL,$PHONENUMBER,$FULLNAME,$IMAGELINK,null,$GENDER,null,null,$BIRTHDAY);
+            $response = new Response(1, "Get current user successful", $user);
+        } else {
+            $response = new Response(0, "Get current user fail", null);
+        }
+        return $response;
+    }
+
+
+    public function getAllUsers(){
+        $response = null;
+        $sql = "SELECT USERID,USERNAME, USERPASSWORD,EMAIL,PHONENUMBER,FULLNAME,IMAGELINK,BIRTHDAY,GENDER FROM " . $this->table_name;
+        $stmt = $this->connection->prepare($sql);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $listUsers = [];
+        while ($row=$stmt->fetch()) {
+            extract($row);
+            $user = new Users($USERID,$USERNAME, null,$EMAIL,$PHONENUMBER,$FULLNAME,$IMAGELINK,null,$GENDER,null,null,$BIRTHDAY);
+            array_push($listUsers,$user);
+        } 
+        $response = new Response(1, "Get current user successful", $listUsers);
         return $response;
     }
 

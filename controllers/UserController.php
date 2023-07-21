@@ -31,6 +31,15 @@ class UserController{
     public function getUserByUsername($username){
         return $this->userService->getUserByUsername($username);
     }
+
+    public function getUserByEmail($email){
+        return $this->userService->getUserByEmail($email);
+    }
+
+
+    public function getAllUsers(){
+        return $this->userService->getAllUsers();
+    }
 }
 
 
