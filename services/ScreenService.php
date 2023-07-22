@@ -57,7 +57,7 @@ class ScreenService{
     }
 
     public function updateScreenByID($screenID,$resolution,$screenSize, $status){
-        $sql = "UPDATE ".$this->table_name." SET RESOLUTION=?, SCREENSIZE=?,STATUS=? WHERE SCREENID=?";
+        $sql = "UPDATE ".$this->table_name." SET RESOLUTION=?, SCREENSIZE=?,STATUS=b? WHERE SCREENID=?";
         $stmt= $this->connection->prepare($sql);
         $stmt ->bindParam(1,$resolution);
         $stmt ->bindParam(2,$screenSize);

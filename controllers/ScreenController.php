@@ -17,12 +17,12 @@ class ScreenController{
         return $this->screenService->getScreensByID($screenID);
     }
 
-    public function insertScreenInfo($resolution,$screenSize,$length,$width,$height){
-        return $this->screenService->insertScreenInfo($resolution,$screenSize,$length,$width,$height);
+    public function insertScreenInfo($resolution,$screenSize){
+        return $this->screenService->insertScreenInfo($resolution,$screenSize);
     }
 
-    public function updateScreenByID($screenID,$resolution,$screenSize,$length,$width,$height, $status){
-        return $this->screenService->updateScreenByID($screenID,$resolution,$screenSize,$length,$width,$height, $status);
+    public function updateScreenByID($screenID,$resolution,$screenSize, $status){
+        return $this->screenService->updateScreenByID($screenID,$resolution,$screenSize, $status);
     }
 }
 

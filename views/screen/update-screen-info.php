@@ -13,10 +13,10 @@ $input = json_decode(file_get_contents('php://input'));
 $response = null;
 try {
     if (
-        isset($input->screenID) && isset($input->resolution) && isset($input->screenSize) && isset($input->length)
-        && isset($input->width) && isset($input->height) && isset($input->status)
+        isset($input->screenID) && isset($input->resolution) 
+        && isset($input->screenSize)  && isset($input->status)
     ) {
-        $response = (new ScreenController())->updateScreenByID($input->screenID, $input->resolution, $input->screenSize, $input->length,  $input->width,  $input->height, $input->status);
+        $response = (new ScreenController())->updateScreenByID($input->screenID, $input->resolution, $input->screenSize, $input->status);
     } else {
         $response = new Response(3, "Not enough parameters", null);
     }

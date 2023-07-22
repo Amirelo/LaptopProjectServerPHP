@@ -13,10 +13,9 @@ $input = json_decode(file_get_contents('php://input'));
 $response = null;
 try {
     if (
-        isset($input->resolution) && isset($input->screenSize) && isset($input->length)
-        && isset($input->width) && isset($input->height)
+        isset($input->resolution) && isset($input->screenSize)
     ) {
-        $response = (new ScreenController())->insertScreenInfo($input->resolution, $input->screenSize, $input->length, $input->width, $input->height);
+        $response = (new ScreenController())->insertScreenInfo($input->resolution, $input->screenSize);
     } else {
         $response = new Response(3, "Not enough parameters", null);
     }
