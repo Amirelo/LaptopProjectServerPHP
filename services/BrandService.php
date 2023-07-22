@@ -44,7 +44,7 @@ class BrandService{
    
 
     public function insertBrand($brandName){
-        $sql = "INSERT INTO ".$this->table_name." (BRANDNAME, STATUS) VALUES(?)";
+        $sql = "INSERT INTO ".$this->table_name." (BRANDNAME, STATUS) VALUES(?,1)";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1,$brandName); 
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
