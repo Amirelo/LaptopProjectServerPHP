@@ -24,6 +24,10 @@ class UserController{
         return $this->userService->signIn($username, $userPassword);
     }
 
+    public function adminSignIn($username, $userPassword){
+        return $this->userService->adminSignIn($username, $userPassword);
+    }
+
     public function updateUserInfo($data, $email, $type){
         return $this->userService->updateUserInfo($data,$email,$type);
     }

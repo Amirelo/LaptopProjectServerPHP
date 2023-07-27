@@ -134,6 +134,29 @@ class UserService
         return $response;
     }
 
+    public function AdminSignIn($username, $userPassword)
+    {
+        $response = null;
+        $sql = "SELECT USERNAME, USERPASSWORD,EMAIL,IMAGELINK FROM " . $this->table_name . " WHERE username = ? AND ISADMIN = TRUE";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(1, $username);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($userPassword == $row['USERPASSWORD']) {
+                $user = new Users(null, $row['USERNAME'], null, $row['EMAIL'], null, null, $row['IMAGELINK'], null, null, null, null, null);
+                $response = new Response(1, "Sign In successful", $user);
+            } else {
+                $response = new Response(0, "Wrong username or password", null);
+            }
+        } else {
+            $response = new Response(0, "Wrong username or password", null);
+        }
+        return $response;
+    }
+
     public function getUserByUsername($username)
     {
         $response = null;
@@ -176,14 +199,14 @@ class UserService
 
     public function getAllUsers(){
         $response = null;
-        $sql = "SELECT USERID,USERNAME, USERPASSWORD,EMAIL,PHONENUMBER,FULLNAME,IMAGELINK,BIRTHDAY,GENDER FROM " . $this->table_name;
+        $sql = "SELECT USERID,USERNAME, USERPASSWORD,EMAIL,PHONENUMBER,FULLNAME,IMAGELINK,BIRTHDAY,GENDER,ACCOUNTSTATUS FROM " . $this->table_name;
         $stmt = $this->connection->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         $listUsers = [];
         while ($row=$stmt->fetch()) {
             extract($row);
-            $user = new Users($USERID,$USERNAME, null,$EMAIL,$PHONENUMBER,$FULLNAME,$IMAGELINK,null,$GENDER,null,null,$BIRTHDAY);
+            $user = new Users($USERID,$USERNAME, null,$EMAIL,$PHONENUMBER,$FULLNAME,$IMAGELINK,null,$GENDER,$ACCOUNTSTATUS,null,$BIRTHDAY);
             array_push($listUsers,$user);
         } 
         $response = new Response(1, "Get current user successful", $listUsers);
