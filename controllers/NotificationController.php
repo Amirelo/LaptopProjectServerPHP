@@ -13,8 +13,8 @@ class NotificationController
         return (new NotificationService())->insertNotificationInfo($title, $detail, $userID);
     }
 
-    public function updateNotificationStatus($status, $userID)
+    public function updateNotificationStatus($status, $userID, $notificationID)
     {
-        return (new NotificationService())->updateNotificationStatus($status, $userID);
+        return (new NotificationService())->updateNotificationStatus($status, $userID, $notificationID);
     }
 }

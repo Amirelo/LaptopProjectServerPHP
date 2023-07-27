@@ -12,8 +12,8 @@ $input = json_decode(file_get_contents('php://input'));
 
 $response = null;
 try {
-    if (isset($input->status) && isset($input->userID)) {
-        $response = (new NotificationController())->updateNotificationStatus($input->status, $input->userID);
+    if (isset($input->status) && isset($input->userID) && isset($input->notificationID)) {
+        $response = (new NotificationController())->updateNotificationStatus($input->status, $input->userID, $input->notificationID);
     } else {
         $response = new Response(3, "Not enough parameters", null);
     }

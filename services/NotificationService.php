@@ -47,12 +47,13 @@ class NotificationService
         return $response;
     }
 
-    public function updateNotificationStatus($status, $userID)
+    public function updateNotificationStatus($status, $userID, $notificationID)
     {
-        $sql = "UPDATE " . $this->table_name . " SET STATUS=? WHERE USERID=?";
+        $sql = "UPDATE " . $this->table_name . " SET STATUS=? WHERE USERID=? AND NOTIFICATIONID=?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1, $status);
         $stmt->bindParam(2, $userID);
+        $stmt->bindParam(3, $notificationID);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
