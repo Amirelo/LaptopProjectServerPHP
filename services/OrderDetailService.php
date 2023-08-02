@@ -1,6 +1,7 @@
 <?php
 include_once '../../dbconfigs/dbconfig.php';
 include_once '../../models/orderDetail.php';
+include_once '../../services/CartService.php';
 
 class OrderDetailService
 {
@@ -28,7 +29,7 @@ class OrderDetailService
         return new Response(1, "Get all orderDetail success", $listOrderDetails);
     }
 
-    public function insertOrderDetail($productQuantity, $userOrderID, $productID)
+    public function insertOrderDetail($productQuantity, $userOrderID, $productID, $cartID)
     {
         $sql = "INSERT INTO " . $this->table_name . " (PRODUCTQUANTITY,USERORDERID,PRODUCTID) VALUES(?,?,?)";
         $stmt = $this->connection->prepare($sql);
@@ -38,16 +39,16 @@ class OrderDetailService
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
-            $sql = "UPDATE TBL_PRODUCT SET PRODUCTQUANTITY=(PRODUCTQUANTITY-?) WHERE PRODUCTID=?";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->bindParam(1, $productQuantity);
-            $stmt->bindParam(2, $productID);
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $stmt->execute();
-            if($stmt->rowCount()>0){
+            $sql2 = "UPDATE TBL_PRODUCT SET PRODUCTQUANTITY=(PRODUCTQUANTITY-?) WHERE PRODUCTID=?";
+            $stmt2 = $this->connection->prepare($sql2);
+            $stmt2->bindParam(1, $productQuantity);
+            $stmt2->bindParam(2, $productID);
+            $stmt2->setFetchMode(PDO::FETCH_ASSOC);
+            $stmt2->execute();
+            if($stmt2->rowCount()>0){
                 $response = new Response(1, "Insert orderDetail success", null);
             }
-            
+            return (new CartService())->deleteCartByID($cartID);
         } else {
             $response = new Response(0, "Fail to add orderDetail, possibly dupplication", null);
         }

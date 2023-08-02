@@ -14,8 +14,9 @@ $response = null;
 try {
     if (isset($input->productQuantity) 
     && isset($input->userOrderID) 
-    && isset($input->productID)) {
-        $response = (new OrderDetailController())->insertOrderDetail($input->productQuantity, $input->userOrderID, $input->productID);
+    && isset($input->productID)
+    && isset($input->cartID)) {
+        $response = (new OrderDetailController())->insertOrderDetail($input->productQuantity, $input->userOrderID, $input->productID,$input->cartID);
     } else {
         $response = new Response(3, "Not enough parameters", null);
     }

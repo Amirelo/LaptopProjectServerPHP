@@ -13,8 +13,8 @@ class OrderDetailController{
         return $this->orderDetailService->getUserOrderDetail($userOrderID);
     }
 
-    public function insertOrderDetail($productQuantity,$userOrderID,$productID){
-        return $this->orderDetailService->insertOrderDetail($productQuantity,$userOrderID,$productID);
+    public function insertOrderDetail($productQuantity,$userOrderID,$productID,$cartID){
+        return $this->orderDetailService->insertOrderDetail($productQuantity,$userOrderID,$productID,$cartID);
     }
 
 }

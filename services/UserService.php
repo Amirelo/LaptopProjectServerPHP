@@ -16,6 +16,7 @@ class UserService
 
     public function checkEmail($email, $type)
     {
+        $response = null;
         $sql = "SELECT * FROM " . $this->table_name . " WHERE EMAIL = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1, $email);
@@ -72,14 +73,16 @@ class UserService
 
     public function insertUser($username, $userPassword, $email, $phonenumber, $fullname, $gender, $birthday)
     {
-        if ($this->checkEmail($email, "SIGNUP")->response_code != 1) {
-            return new Response(0, "Email already registered", null);
-        }
-        if ($this->checkPhoneNumber($phonenumber)->response_code != 1) {
-            return new Response(0, "Phone number already registered", null);
-        }
-        if ($this->checkUserName($username)->response_code != 1) {
-            return new Response(0, "Username already in use", null);
+        if ($userPassword != null) {
+            if ($this->checkEmail($email, "SIGNUP")->response_code != 1) {
+                return new Response(0, "Email already registered", null);
+            }
+            if ($this->checkPhoneNumber($phonenumber)->response_code != 1) {
+                return new Response(0, "Phone number already registered", null);
+            }
+            if ($this->checkUserName($username)->response_code != 1) {
+                return new Response(0, "Username already in use", null);
+            }
         }
         $createdate = date('Y-m-d H:i:s');
         $accountStatus = 1;
@@ -169,7 +172,7 @@ class UserService
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             extract($row);
-            $user = new Users($USERID,$USERNAME, null,$EMAIL,$PHONENUMBER,$FULLNAME,$IMAGELINK,null,$GENDER,null,null,$BIRTHDAY);
+            $user = new Users($USERID, $USERNAME, null, $EMAIL, $PHONENUMBER, $FULLNAME, $IMAGELINK, null, $GENDER, null, null, $BIRTHDAY);
             $response = new Response(1, "Get current user successful", $user);
         } else {
             $response = new Response(0, "Get current user fail", null);
@@ -177,7 +180,8 @@ class UserService
         return $response;
     }
 
-    public function getUserByEmail($email){
+    public function getUserByEmail($email)
+    {
         $response = null;
         $sql = "SELECT USERID,USERNAME, USERPASSWORD,EMAIL,PHONENUMBER,FULLNAME,IMAGELINK,BIRTHDAY,GENDER FROM " . $this->table_name . " WHERE EMAIL = ?";
         $stmt = $this->connection->prepare($sql);
@@ -188,7 +192,7 @@ class UserService
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             extract($row);
-            $user = new Users($USERID,$USERNAME, null,$EMAIL,$PHONENUMBER,$FULLNAME,$IMAGELINK,null,$GENDER,null,null,$BIRTHDAY);
+            $user = new Users($USERID, $USERNAME, null, $EMAIL, $PHONENUMBER, $FULLNAME, $IMAGELINK, null, $GENDER, null, null, $BIRTHDAY);
             $response = new Response(1, "Get current user successful", $user);
         } else {
             $response = new Response(0, "Get current user fail", null);
@@ -197,18 +201,19 @@ class UserService
     }
 
 
-    public function getAllUsers(){
+    public function getAllUsers()
+    {
         $response = null;
         $sql = "SELECT USERID,USERNAME, USERPASSWORD,EMAIL,PHONENUMBER,FULLNAME,IMAGELINK,BIRTHDAY,GENDER,ACCOUNTSTATUS FROM " . $this->table_name;
         $stmt = $this->connection->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         $listUsers = [];
-        while ($row=$stmt->fetch()) {
+        while ($row = $stmt->fetch()) {
             extract($row);
-            $user = new Users($USERID,$USERNAME, null,$EMAIL,$PHONENUMBER,$FULLNAME,$IMAGELINK,null,$GENDER,$ACCOUNTSTATUS,null,$BIRTHDAY);
-            array_push($listUsers,$user);
-        } 
+            $user = new Users($USERID, $USERNAME, null, $EMAIL, $PHONENUMBER, $FULLNAME, $IMAGELINK, null, $GENDER, $ACCOUNTSTATUS, null, $BIRTHDAY);
+            array_push($listUsers, $user);
+        }
         $response = new Response(1, "Get current user successful", $listUsers);
         return $response;
     }

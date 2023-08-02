@@ -10,14 +10,11 @@ include_once '../../controllers/UserController.php';
 $input = json_decode(file_get_contents("php://input"));
 
 $response = null;
+echo json_encode($input->username);
 try{
-    if(isset($input->username) 
-    && isset($input->userPassword)
-    && isset($input->email)
-    && isset($input->phonenumber)
-    && isset($input->fullname)
-    && isset($input->gender)
-    && isset($input->birthday)) {
+    if(
+    isset($input->email)
+    && isset($input->fullname)) {
         $response = (new UserController())->SignUp($input->username,$input->userPassword,$input->email,$input->phonenumber, $input->fullname, $input->gender, $input->birthday);
     } else{
         $response = new Response(3, "Not enough parameters", null);
@@ -27,4 +24,3 @@ try{
 }
 
 echo json_encode($response);
-?>

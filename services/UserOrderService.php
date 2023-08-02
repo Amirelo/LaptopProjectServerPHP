@@ -46,7 +46,7 @@ class UserOrderService
     {
         $sql = "INSERT INTO " . $this->table_name . " (TOTALPRICE,ORIGINALPRICE,NOTE,STATUS,RECEIVER,SHIPPINGFEE,PENDINGDATE,ADDRESSID,USERID,COUPONID,CARDID) VALUES(?,?,?,1,?,?,?,?,?,null,?)";
         $stmt = $this->connection->prepare($sql);
-        $pendingDate = date('Y-m-d');
+        $pendingDate = date('Y-m-d H:m:s');
         $stmt->bindParam(1, $totalPrice);
         $stmt->bindParam(2, $originalPrice);
         $stmt->bindParam(3, $note);
@@ -104,7 +104,7 @@ class UserOrderService
                 $response = new Response(0, "No row matched id", null);
             }
         } else {
-            $date = date('Y-m-d');
+            $date = date('Y-m-d H:m:s');
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(1, $date);
             $stmt->bindParam(2, $userOrderID);

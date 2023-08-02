@@ -3,13 +3,13 @@ CREATE DATABASE thuctaptotnghiep;
 USE thuctaptotnghiep;
 CREATE TABLE TBL_USER(
 	userID INTEGER PRIMARY KEY AUTO_INCREMENT,
-	username VARCHAR(50) NOT NULL,
-	userPassword VARCHAR(50) NOT NULL,
+	username VARCHAR(50),
+	userPassword VARCHAR(50),
 	email VARCHAR(255) NOT NULL,
-	phoneNumber VARCHAR(12) NOT NULL,
-	fullName VARCHAR(50) NOT NULL,
+	phoneNumber VARCHAR(12),
+	fullName VARCHAR(50),
 	imageLink VARCHAR(255) NOT NULL,
-	birthday VARCHAR(12) NOT NULL,
+	birthday VARCHAR(12),
 	createDate DATE NOT NULL,
 	gender VARCHAR(10),
 	accountStatus INTEGER NOT NULL,

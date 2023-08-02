@@ -14,8 +14,9 @@ $response = null;
 try {
     if (
         isset($input->data) && isset($input->type)&& isset($input -> addressID)
+        && isset($input -> userID)
     ) {
-        $response = (new AddressController())->updateAddressInfo($input->data, $input->type, $input->addressID);
+        $response = (new AddressController())->updateAddressInfo($input->data, $input->type, $input->addressID, $input -> userID);
     } else {
         $response = new Response(3, "Not enough parameters", null);
     }

@@ -21,8 +21,8 @@ class AddressController{
         return (new AddressService()) -> insertAddress($addressName,$ward,$district,$city,$status,$userID);
     }
 
-    public function updateAddressInfo($data, $type, $addressID){
-        return (new AddressService())->updateAddressInfo($data, $type, $addressID);
+    public function updateAddressInfo($data, $type, $addressID, $userID){
+        return (new AddressService())->updateAddressInfo($data, $type, $addressID,$userID);
     }
 
 }
