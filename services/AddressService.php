@@ -104,7 +104,7 @@ class AddressService
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
-            $response = new Response(1, "Insert address success", $null);
+            $response = new Response(1, "Insert address success", null);
         } else {
             $response = new Response(0, "Something wrong happen", null);
         }
