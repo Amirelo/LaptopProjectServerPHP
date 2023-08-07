@@ -16,8 +16,8 @@ class ProductController{
         return $this->productService->getProductByID($productID);
     }
 
-    public function insertProductInfo($productName, $productPrice, $productQuantity, $releasedDate, $totalRating, $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, $sold, $length, $width, $height, $weight, $status, $brandID, $screenID, $operatingSystemID, $processorID, $memoryID, $storageID){
-        return $this->productService->insertProductInfo($productName, $productPrice, $productQuantity, $releasedDate, $totalRating, $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, $sold, $length, $width, $height, $weight, $status, $brandID, $screenID, $operatingSystemID, $processorID, $memoryID, $storageID);
+    public function insertProductInfo($productName, $productPrice, $productQuantity, $releasedDate, $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, $sold, $length, $width, $height, $weight, $brandID, $screenID, $operatingSystemID, $processorID, $memoryID, $storageID){
+        return $this->productService->insertProductInfo($productName, $productPrice, $productQuantity, $releasedDate, $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, $sold, $length, $width, $height, $weight, $brandID, $screenID, $operatingSystemID, $processorID, $memoryID, $storageID);
     }
 
     public function updateProductByID(

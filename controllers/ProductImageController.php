@@ -16,8 +16,8 @@ class ProductImageController{
         return $this->productImageService->getProductImagesByProductID($productID);
     }
 
-    public function insertProductImageInfo($productImageLink,$productID){
-        return $this->productImageService->insertProductImageInfo($productImageLink,$productID);
+    public function insertProductImageInfo($productImageLink, $status, $productID){
+        return $this->productImageService->insertProductImageInfo($productImageLink, $status,$productID);
     }
 
     public function updateProductImageByID($productImageID,$productImageLink,$status,$productID){

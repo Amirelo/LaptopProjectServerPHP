@@ -17,7 +17,6 @@ try {
         isset($input->productPrice) &&
         isset($input->productQuantity) &&
         isset($input->releasedDate) &&
-        isset($input->totalRating) &&
         isset($input->modelCode) &&
         isset($input->onSale) &&
         isset($input->currentPrice) &&
@@ -28,7 +27,6 @@ try {
         isset($input->width) &&
         isset($input->height) &&
         isset($input->weight) &&
-        isset($input->status) &&
         isset($input->brandID) &&
         isset($input->screenID) &&
         isset($input->operatingSystemID) &&
@@ -41,7 +39,6 @@ try {
             $input->productPrice,
             $input->productQuantity,
             $input->releasedDate,
-            $input->totalRating,
             $input->modelCode,
             $input->onSale,
             $input->currentPrice,
@@ -52,7 +49,6 @@ try {
             $input->width,
             $input->height,
             $input->weight,
-            $input->status,
             $input->brandID,
             $input->screenID,
             $input->operatingSystemID,

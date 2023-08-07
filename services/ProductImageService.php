@@ -40,11 +40,12 @@ class ProductImageService{
         return new Response(1,"Get productImage by id success", $listProductImages);
     }
 
-    public function insertProductImageInfo($productImageLink,$productID){
-        $sql = "INSERT INTO ".$this->table_name." (PRODUCTIMAGELINK,STATUS,PRODUCTID) VALUES(?,true,?)";
+    public function insertProductImageInfo($productImageLink,$status, $productID){
+        $sql = "INSERT INTO ".$this->table_name." (PRODUCTIMAGELINK,STATUS,PRODUCTID) VALUES(?,?,?)";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1,$productImageLink); 
-        $stmt->bindParam(2,$productID);
+        $stmt->bindParam(2,$status);
+        $stmt->bindParam(3,$productID);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         if($stmt->rowCount()>0){

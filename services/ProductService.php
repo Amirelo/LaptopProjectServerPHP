@@ -44,14 +44,16 @@ class ProductService{
    
 
 
-    public function insertProductInfo($productName, $productPrice, $productQuantity, $releasedDate, $totalRating, $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, $sold, $length, $width, $height, $weight, $status, $brandID, $screenID, $operatingSystemID, $processorID, $memoryID, $storageID){
+    public function insertProductInfo($productName, $productPrice, $productQuantity, $releasedDate, $modelCode, $onSale, $currentPrice, $manufacturer, $warranty, $sold, $length, $width, $height, $weight, $brandID, $screenID, $operatingSystemID, $processorID, $memoryID, $storageID){
         $sql = "INSERT INTO ".$this->table_name." (PRODUCTNAME,PRODUCTPRICE,PRODUCTQUANTITY,RELEASEDDATE,TOTALRATING,MODELCODE,ONSALE,CURRENTPRICE,MANUFACTURER,WARRANTY,SOLD,LENGTH,WIDTH,HEIGHT,WEIGHT,STATUS,BRANDID,SCREENID,OPERATINGSYSTEMID,PROCESSORID,MEMORYID,STORAGEID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,b?,?,?,?,?,?,?)";
+        $totalRating =0;
+        $status = true;
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(1,$productName); 
         $stmt->bindParam(2,$productPrice);
         $stmt->bindParam(3,$productQuantity); 
         $stmt->bindParam(4,$releasedDate);
-        $stmt->bindParam(5,$totalRating); 
+        $stmt->bindParam(5, $totalRating); 
         $stmt->bindParam(6,$modelCode);
         $stmt->bindParam(7,$onSale); 
         $stmt->bindParam(8,$currentPrice);
@@ -62,7 +64,7 @@ class ProductService{
         $stmt->bindParam(13,$width);
         $stmt->bindParam(14,$height);
         $stmt->bindParam(15,$weight); 
-        $stmt->bindParam(16,$status);
+        $stmt->bindParam(16, $status);
         $stmt->bindParam(17,$brandID); 
         $stmt->bindParam(18,$screenID);
         $stmt->bindParam(19,$operatingSystemID); 

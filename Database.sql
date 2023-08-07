@@ -542,7 +542,7 @@ INSERT INTO TBL_PRODUCTIMAGE(PRODUCTIMAGELINK,STATUS,PRODUCTID) VALUES
 ("https://i.imgur.com/fK7zBHd.png",1,29),
 ("https://i.imgur.com/KjSrrwa.png",2,29),
 ("https://i.imgur.com/Wboi9ah.png",2,29),
-("https://i.imgur.com/337ingx.png",1,30),
+("https://i.imgur.com/eQn4mh2.png",1,30),
 ("https://i.imgur.com/l8jPGfe.png",2,30),
 ("https://i.imgur.com/LiObmUH.png",2,30),
 ("https://i.imgur.com/ZqoIvkW.png",1,31),
